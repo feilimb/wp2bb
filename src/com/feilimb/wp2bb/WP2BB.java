@@ -43,20 +43,33 @@ public class WP2BB
    
    private static final String IMG_DIR_NAME = "img";
    
+   private String _align;
+   
+   private int _width;
+   
+   private String _sourceFilename;
+   
    /**
     * @param args
     */
    public static void main(String[] args)
    {
       WP2BB w = new WP2BB();
-      w.start("foo.txt");
+      w.start();
    }
    
-   private void start(String filename)
+   public WP2BB()
+   {
+      _align = "CENTER";   // default alignment
+      _width = 640;        // default width
+      _sourceFilename = "foo.txt";
+   }
+   
+   private void start()
    {
       Set<ImageInfo> imageInfos;
       File f = new File(".");
-      String filePath = f.getAbsolutePath() + File.separator + filename;
+      String filePath = f.getAbsolutePath() + File.separator + _sourceFilename;
 	   StringBuilder sb = readFileIntoString(filePath);
 	   
 	   // clean out any previously created images
@@ -166,7 +179,7 @@ public class WP2BB
         		 ext = m.group(0).replace(".", "");
         		 System.out.println(">>> Reading in image from: " + imgPath);
         		 BufferedImage img = ImageIO.read(new URL(imgPath));
-        		 BufferedImage resized = Scalr.resize(img, Scalr.Mode.FIT_TO_WIDTH, 640);
+        		 BufferedImage resized = Scalr.resize(img, Scalr.Mode.FIT_TO_WIDTH, _width);
         		 String paddedIndex = String.format("%03d", index++);
         		 File outputfile = new File("img/resized_" + paddedIndex + "." + ext);
         		 System.out.println(">>> Saving file to: " + outputfile.getAbsolutePath());
@@ -275,7 +288,8 @@ public class WP2BB
 	   String bbPost = new String(sb.toString());
 	   for (ImageInfo i : imageInfos) 
 	   {
-	      bbPost = bbPost.replaceAll(i.getTempReplacement(), "[IMG]" + i.getImgurURL() + "[/IMG]");
+	      String imgurTag = "[" + _align + "/]" + "[IMG]" + i.getImgurURL() + "[/IMG]" + "[" + _align + "/]";
+	      bbPost = bbPost.replaceAll(i.getTempReplacement(), imgurTag);
 	   }
 	   
 	   return bbPost;
