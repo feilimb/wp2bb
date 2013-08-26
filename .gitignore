@@ -2,8 +2,3 @@ img
 bin
 foo.txt
 *.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
