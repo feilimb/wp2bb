@@ -76,10 +76,10 @@ public class WP2BB
 	   File dir = new File(f.getAbsolutePath() + File.separator + IMG_DIR_NAME);
 	   if (dir.exists() && dir.isDirectory())
 	   {
-   	   for(File file: dir.listFiles())
-   	   {
-   	      file.delete();
-         }
+	   	   for(File file: dir.listFiles())
+	   	   {
+	   		   file.delete();
+	   	   }
 	   }
 	   
 	   // find image tags within the wordpress post and change the references 
